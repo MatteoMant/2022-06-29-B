@@ -36,6 +36,31 @@ public class ItunesDAO {
 		return result;
 	}
 	
+	public List<Album> getAllAlbumsWithSeconds(int secondi){
+		final String sql = "SELECT a.* "
+				+ "FROM track t, album a "
+				+ "WHERE t.AlbumId = a.AlbumId "
+				+ "GROUP BY AlbumId "
+				+ "HAVING SUM(Milliseconds/1000) > ?";
+		List<Album> result = new LinkedList<>();
+		
+		try {
+			Connection conn = DBConnect.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setInt(1, secondi);
+			ResultSet res = st.executeQuery();
+
+			while (res.next()) {
+				result.add(new Album(res.getInt("AlbumId"), res.getString("Title")));
+			}
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException("SQL Error");
+		}
+		return result;
+	}
+	
 	public List<Artist> getAllArtists(){
 		final String sql = "SELECT * FROM Artist";
 		List<Artist> result = new LinkedList<>();
@@ -138,7 +163,27 @@ public class ItunesDAO {
 		}
 		return result;
 	}
-	
+
+	public double getDurataAlbum(Album album){
+		final String sql = "SELECT SUM(Milliseconds) AS durata "
+				+ "FROM track "
+				+ "WHERE AlbumId = ?";
+		
+		try {
+			Connection conn = DBConnect.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setInt(1, album.getAlbumId());
+			ResultSet res = st.executeQuery();
+
+			res.first();
+			double durata = res.getDouble("durata");
+			conn.close();
+			return durata/1000;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException("SQL Error");
+		}
+	}
 	
 	
 }
