@@ -165,7 +165,7 @@ public class ItunesDAO {
 	}
 
 	public double getDurataAlbum(Album album){
-		final String sql = "SELECT SUM(Milliseconds) AS durata "
+		final String sql = "SELECT SUM(Milliseconds/1000) AS durata "
 				+ "FROM track "
 				+ "WHERE AlbumId = ?";
 		
@@ -178,7 +178,7 @@ public class ItunesDAO {
 			res.first();
 			double durata = res.getDouble("durata");
 			conn.close();
-			return durata/1000;
+			return durata;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException("SQL Error");

@@ -57,9 +57,9 @@ public class Model {
 		List<AlbumAndBilancio> result = new LinkedList<>();
 		
 		for (Album a : Graphs.successorListOf(this.grafo, a1)) {
-			int bilancio = calcolaBilancio(a);
+			double bilancio = calcolaBilancio(a);
 			result.add(new AlbumAndBilancio(a, bilancio));
-		}
+		} 
 		
 		if (result != null)
 			Collections.sort(result);

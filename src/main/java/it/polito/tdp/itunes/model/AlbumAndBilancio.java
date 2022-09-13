@@ -3,9 +3,9 @@ package it.polito.tdp.itunes.model;
 public class AlbumAndBilancio implements Comparable<AlbumAndBilancio> {
 	
 	private Album album;
-	private Integer bilancio;
+	private Double bilancio;
 	
-	public AlbumAndBilancio(Album album, Integer bilancio) {
+	public AlbumAndBilancio(Album album, Double bilancio) {
 		super();
 		this.album = album;
 		this.bilancio = bilancio;
@@ -19,17 +19,17 @@ public class AlbumAndBilancio implements Comparable<AlbumAndBilancio> {
 		this.album = album;
 	}
 	
-	public Integer getBilancio() {
+	public Double getBilancio() {
 		return bilancio;
 	}
 	
-	public void setBilancio(Integer bilancio) {
+	public void setBilancio(Double bilancio) {
 		this.bilancio = bilancio;
 	}
 
 	@Override
 	public int compareTo(AlbumAndBilancio other) {
-		return other.getBilancio() - this.getBilancio();
+		return other.getBilancio().compareTo(this.getBilancio());
 	}
 	
 	
